@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+
 /**
  * @Api：用在类上，说明该类的作用
  * @ApiOperation：用在方法上，说明方法的作用
@@ -38,6 +39,7 @@ import java.util.UUID;
 @Slf4j
 @Api(description = "入口")
 @RestController
+@RequestMapping("/api/v1")
 public class IndexController extends BaseController {
     /**
      * 开关

@@ -1,17 +1,17 @@
 package com.javasoso.pass.aop;
 
 import com.javasoso.pass.constant.PlatformEnum;
-import com.javasoso.pass.constant.RedisKey;
 import com.javasoso.pass.constant.ResultModel;
 import com.javasoso.pass.model.User;
 import com.javasoso.pass.service.LoginService;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -19,7 +19,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
 
 /**
  * 登录拦截
@@ -35,6 +34,8 @@ public class CheckLoginAspect {
     private LoginService loginService;
 
     private static ThreadLocal<User> userThreadLocal = new ThreadLocal<>();
+
+    private static ThreadLocal<PlatformEnum> platformThreadLocal = new ThreadLocal<>();
 
     @Pointcut("@annotation(com.javasoso.pass.aop.CheckLogin)")
     public void annotationPointCut() {
@@ -59,17 +60,20 @@ public class CheckLoginAspect {
                 log.warn("客户端类型获取异常：{}", e.getMessage());
             }
         }
+        platform = platform == null ? PlatformEnum.WEB : platform;
         User user = loginService.checkToken(token, platform);
         if (user == null) {
             return new ResultModel<>(ResultModel.RESULT_AUTH_INVALID, "登录失效");
         }
         userThreadLocal.set(user);
+        platformThreadLocal.set(platform);
         return joinPoint.proceed();
     }
 
     @AfterReturning("annotationPointCut()")
     public void after(JoinPoint joinPoint) {
         clearCurrentUser();
+        clearCurrentPlatform();
     }
 
     /**
@@ -110,5 +114,20 @@ public class CheckLoginAspect {
      */
     public static void clearCurrentUser() {
         userThreadLocal.remove();
+    }
+
+    /**
+     * 获取当前的终端
+     * @return
+     */
+    public static PlatformEnum getCurrentPlatform() {
+        return platformThreadLocal.get();
+    }
+
+    /**
+     * 清除当前终端
+     */
+    public static void clearCurrentPlatform() {
+        platformThreadLocal.remove();
     }
 }
