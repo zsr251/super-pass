@@ -1,5 +1,7 @@
 package com.javasoso.pass.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 import javax.persistence.*;
 
@@ -16,6 +18,7 @@ public class User {
     /**
      * 密码
      */
+    @JsonIgnore
     @Column(name = "super_pass")
     private String superPass;
 

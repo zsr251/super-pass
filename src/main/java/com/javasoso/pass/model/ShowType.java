@@ -8,7 +8,7 @@ public class ShowType {
     private Integer id;
 
     /**
-     * 0 账户类 1 卡类
+     * 1 账户类 2 卡类
      */
     @Column(name = "account_type")
     private Integer accountType;
@@ -57,18 +57,18 @@ public class ShowType {
     }
 
     /**
-     * 获取0 账户类 1 卡类
+     * 获取1 账户类 2 卡类
      *
-     * @return account_type - 0 账户类 1 卡类
+     * @return account_type - 1 账户类 2 卡类
      */
     public Integer getAccountType() {
         return accountType;
     }
 
     /**
-     * 设置0 账户类 1 卡类
+     * 设置1 账户类 2 卡类
      *
-     * @param accountType 0 账户类 1 卡类
+     * @param accountType 1 账户类 2 卡类
      */
     public void setAccountType(Integer accountType) {
         this.accountType = accountType;

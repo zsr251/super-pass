@@ -14,7 +14,8 @@ CREATE TABLE `tb_app_account` (
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '状态 -1 永久删除 0 废纸篓 1 有效',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应用';
 
 
@@ -35,7 +36,8 @@ CREATE TABLE `tb_card_account` (
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '状态 -1 永久删除 0 废纸篓 1 正常',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='卡号';
 
 
@@ -45,16 +47,20 @@ CREATE TABLE `tb_card_account` (
 
 CREATE TABLE `tb_login_log` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL COMMENT '用户ID',
+  `user_id` int(11) NOT NULL COMMENT '用户ID',
+  `login_type` int(11) DEFAULT NULL COMMENT '登录方式 1 密码 2 手机 3 邮箱 4 指纹',
   `platform` int(11) DEFAULT NULL COMMENT '平台 1 网页 2 android 3 ios 4 浏览器插件 5 桌面',
   `agent` varchar(500) DEFAULT NULL COMMENT '客户端数据',
   `ip` varchar(50) DEFAULT NULL COMMENT '登录IP',
-  `token` varchar(100) DEFAULT NULL COMMENT '登录token',
+  `token` varchar(100) DEFAULT '' COMMENT '登录token',
   `status` int(11) DEFAULT NULL COMMENT '0 登录失败 1 登录成功',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  PRIMARY KEY (`id`)
+  `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_create_time` (`create_time`),
+  KEY `idx_token` (`token`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='登录日志';
-
 
 
 # Dump of table tb_memo
@@ -68,7 +74,8 @@ CREATE TABLE `tb_memo` (
   `status` int(11) DEFAULT '1' COMMENT '状态 -1 永久删除 0 废纸篓 1 正常',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='备忘录';
 
 
@@ -86,8 +93,10 @@ CREATE TABLE `tb_operate_log` (
   `data_id` int(11) DEFAULT NULL COMMENT '记录ID',
   `remark` varchar(500) DEFAULT '' COMMENT '操作备注',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='操作日志';
+  PRIMARY KEY (`id`),
+  KEY `idx_user_id` (`user_id`),
+  KEY `idx_operate_type` (`operate_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 
@@ -96,7 +105,7 @@ CREATE TABLE `tb_operate_log` (
 
 CREATE TABLE `tb_show_type` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `account_type` int(11) NOT NULL DEFAULT '0' COMMENT '0 账户类 1 卡类',
+  `account_type` int(11) NOT NULL DEFAULT '1' COMMENT '1 账户类 2 卡类',
   `icon` varchar(50) NOT NULL DEFAULT '' COMMENT '图标标示',
   `default_name` varchar(50) NOT NULL DEFAULT '' COMMENT '应用名',
   `default_url` varchar(300) DEFAULT NULL COMMENT 'URL',
@@ -119,6 +128,8 @@ CREATE TABLE `tb_user` (
   `status` int(11) NOT NULL DEFAULT '1' COMMENT '状态 0 账户锁定 1 正常 2 通过认证',
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `un_user_name` (`user_name`),
+  KEY `idx_phone` (`super_pass`),
+  KEY `idx_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户';
-

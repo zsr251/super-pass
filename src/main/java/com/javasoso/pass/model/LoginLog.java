@@ -14,7 +14,13 @@ public class LoginLog {
     private Integer userId;
 
     /**
-     * 平台 1 网页 2 android 3 ios 4 桌面
+     * 登录方式 1 密码 2 手机 3 邮箱 4 指纹
+     */
+    @Column(name = "login_type")
+    private Integer loginType;
+
+    /**
+     * 平台 1 网页 2 android 3 ios 4 浏览器插件 5 桌面
      */
     private Integer platform;
 
@@ -43,6 +49,9 @@ public class LoginLog {
      */
     @Column(name = "create_time")
     private Date createTime;
+
+    @Column(name = "update_time")
+    private Date updateTime;
 
     /**
      * @return id
@@ -77,18 +86,36 @@ public class LoginLog {
     }
 
     /**
-     * 获取平台 1 网页 2 android 3 ios 4 桌面
+     * 获取登录方式 1 密码 2 手机 3 邮箱 4 指纹
      *
-     * @return platform - 平台 1 网页 2 android 3 ios 4 桌面
+     * @return login_type - 登录方式 1 密码 2 手机 3 邮箱 4 指纹
+     */
+    public Integer getLoginType() {
+        return loginType;
+    }
+
+    /**
+     * 设置登录方式 1 密码 2 手机 3 邮箱 4 指纹
+     *
+     * @param loginType 登录方式 1 密码 2 手机 3 邮箱 4 指纹
+     */
+    public void setLoginType(Integer loginType) {
+        this.loginType = loginType;
+    }
+
+    /**
+     * 获取平台 1 网页 2 android 3 ios 4 浏览器插件 5 桌面
+     *
+     * @return platform - 平台 1 网页 2 android 3 ios 4 浏览器插件 5 桌面
      */
     public Integer getPlatform() {
         return platform;
     }
 
     /**
-     * 设置平台 1 网页 2 android 3 ios 4 桌面
+     * 设置平台 1 网页 2 android 3 ios 4 浏览器插件 5 桌面
      *
-     * @param platform 平台 1 网页 2 android 3 ios 4 桌面
+     * @param platform 平台 1 网页 2 android 3 ios 4 浏览器插件 5 桌面
      */
     public void setPlatform(Integer platform) {
         this.platform = platform;
@@ -182,5 +209,19 @@ public class LoginLog {
      */
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    /**
+     * @return update_time
+     */
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    /**
+     * @param updateTime
+     */
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

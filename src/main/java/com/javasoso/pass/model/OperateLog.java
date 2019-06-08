@@ -14,7 +14,7 @@ public class OperateLog {
     private Integer userId;
 
     /**
-     * 平台 1 网页 2 android 3 ios 4 桌面
+     * 平台 1 网页 2 android 3 ios 4 浏览器插件 5 桌面
      */
     private Integer platform;
 

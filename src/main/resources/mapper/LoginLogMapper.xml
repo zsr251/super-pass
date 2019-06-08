@@ -7,11 +7,16 @@
     -->
     <result column="id" property="id" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="login_type" property="loginType" jdbcType="INTEGER" />
     <result column="platform" property="platform" jdbcType="INTEGER" />
     <result column="agent" property="agent" jdbcType="VARCHAR" />
     <result column="ip" property="ip" jdbcType="VARCHAR" />
     <result column="token" property="token" jdbcType="VARCHAR" />
     <result column="status" property="status" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
   </resultMap>
+    <update id="clearToken">
+      update tb_login_log set token = '' where user_id = #{userId} and platform = #{platform} and `status` = 1 and token != ''
+    </update>
 </mapper>

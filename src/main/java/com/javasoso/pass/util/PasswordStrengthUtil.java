@@ -167,8 +167,8 @@ public class PasswordStrengthUtil {
                 || countLetter(passwd, CAPITAL_LETTER) == len) {
             level--;
         }
-
-        if (len % 2 == 0) { // aaabbb
+        // aaabbb
+        if (len % 2 == 0) {
             String part1 = passwd.substring(0, len / 2);
             String part2 = passwd.substring(len / 2);
             if (part1.equals(part2)) {
@@ -331,8 +331,14 @@ public class PasswordStrengthUtil {
      */
     public static String generatePassword(int length, boolean haveNum, boolean haveCapital, boolean haveSmall, boolean haveOther) {
         //如果长度小于4 或者 没有选择类型
-        if (length < 4 || (haveNum || haveCapital || haveSmall || haveOther) == false) {
-            return "null";
+        if (length < 4) {
+            length = 18;
+        }
+        if ((haveNum || haveCapital || haveSmall || haveOther) == false){
+            haveNum = true;
+            haveCapital = true;
+            haveSmall = true;
+            haveOther =true;
         }
         //结果
         char[] result = new char[length];
@@ -481,5 +487,13 @@ public class PasswordStrengthUtil {
             }
         }
         return new String(result);
+    }
+
+    /**
+     * 生成随机密码
+     * @return
+     */
+    public static String generatePassword(){
+        return generatePassword(18,true,true,true,true);
     }
 }

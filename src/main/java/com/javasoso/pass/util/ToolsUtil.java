@@ -14,18 +14,62 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 /**
  * @author forgkan Created on 2014年11月28日
  */
 public class ToolsUtil {
 
-    public static Pattern mobilePattern = Pattern.compile("^[1][0-9]{10}$"); // 验证手机号
+    public static Pattern mobilePattern = Pattern.compile("^[1][0-9]{10}$");
 
     public static boolean isMobile(String str) {
         Matcher m = mobilePattern.matcher(str);
         return m.matches();
     }
 
+
+    /**
+     * 获得user agent
+     * @param request
+     * @return
+     */
+    public static String getUserAgent(HttpServletRequest request) {
+        return request.getHeader("User-Agent");
+    }
+
+    /**
+     * 获得真实ip
+     * @param request
+     * @return
+     */
+    public static String getRemoteIp(HttpServletRequest request) {
+        String ip = request.getRemoteHost();
+        String realIP = request.getHeader("X-Real-IP");
+        if (isNotBlank(realIP)) {
+            ip = realIP;
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("x-forwarded-for");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+            ip = request.getRemoteAddr();
+        }
+        // 可是，如果通过了多级反向代理的话，X-Forwarded-For的值并不止一个，而是一串IP值
+        if(ip != null && ip.length() > 15) {
+            int index = ip.indexOf(",");
+            if (index > -1) {
+                ip = ip.substring(0, index);
+            }
+        }
+        return ip;
+    }
 
     /**
      * 校验银行卡卡号
