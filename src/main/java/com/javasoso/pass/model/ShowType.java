@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 @Table(name = "tb_show_type")
 public class ShowType {
+    @Id
     private Integer id;
 
     /**

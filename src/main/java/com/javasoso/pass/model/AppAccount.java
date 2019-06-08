@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 @Table(name = "tb_app_account")
 public class AppAccount {
+    @Id
     private Integer id;
 
     /**

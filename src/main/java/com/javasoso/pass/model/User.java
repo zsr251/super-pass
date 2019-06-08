@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 @Table(name = "tb_user")
 public class User {
+    @Id
     private Integer id;
 
     /**

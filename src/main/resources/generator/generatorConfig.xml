@@ -21,6 +21,8 @@
                         connectionURL="${jdbc.url}"
                         userId="${jdbc.user}"
                         password="${jdbc.password}">
+            <!--识别主键-->
+            <property name="useInformationSchema" value="true"/>
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="true"/>

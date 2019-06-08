@@ -5,6 +5,7 @@ import javax.persistence.*;
 
 @Table(name = "tb_login_log")
 public class LoginLog {
+    @Id
     private Integer id;
 
     /**
