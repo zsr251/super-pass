@@ -3,6 +3,7 @@ package com.javasoso.pass.controller;
 import com.javasoso.pass.constant.ResultModel;
 import com.javasoso.pass.model.User;
 import com.javasoso.pass.service.UserService;
+import com.javasoso.pass.util.AESUtil;
 import com.javasoso.pass.util.BeanUtil;
 import com.javasoso.pass.util.MD5Util;
 import com.javasoso.pass.util.PasswordStrengthUtil;
@@ -98,24 +99,54 @@ public class IndexController extends BaseController {
     public ResultModel checkStrength(@RequestParam String pwd) {
         Map<String, String> result = new HashMap<>(3);
         result.put("password", pwd);
-        result.put("strength",String.valueOf(PasswordStrengthUtil.checkPasswordStrength(pwd)));
-        result.put("level",String.valueOf(PasswordStrengthUtil.getPasswordLevel(pwd)));
+        result.put("strength", String.valueOf(PasswordStrengthUtil.checkPasswordStrength(pwd)));
+        result.put("level", String.valueOf(PasswordStrengthUtil.getPasswordLevel(pwd)));
         return buildSuccessResponse(result);
     }
 
     @ApiOperation(value = "生成 secure", notes = "只用于测试，生产由客户端生成")
     @RequestMapping(value = "/generateSecure", method = RequestMethod.GET)
-    public ResultModel test(@RequestParam(required = false) String pwd) {
+    public ResultModel generateSecure(@RequestParam(required = false) String pwd) {
         pwd = StringUtils.isEmpty(pwd) ? PasswordStrengthUtil.generatePassword() : pwd;
         String secure = UUID.randomUUID().toString().toUpperCase();
         String salt = BCrypt.gensalt(10);
-        String S = MD5Util.encode(secure+pwd);
+        String S = MD5Util.encode(secure + pwd);
         Map<String, String> result = new HashMap<>(5);
-        result.put("password",pwd);
-        result.put("secure",secure);
+        result.put("password", pwd);
+        result.put("secure", secure);
         result.put("S", S);
-        result.put("salt",salt);
-        result.put("P",BCrypt.hashpw(S,salt));
+        result.put("P", BCrypt.hashpw(S, salt));
         return buildSuccessResponse(result);
+    }
+
+    @ApiOperation(value = "生成 S", notes = "生成S，生产由客户端生成")
+    @RequestMapping(value = "/generateP", method = RequestMethod.GET)
+    public ResultModel generateS(@RequestParam String pwd, @RequestParam String secure) {
+        Map<String, String> result = new HashMap<>(2);
+        String S = MD5Util.encode(secure + pwd);
+        String salt = BCrypt.gensalt(10);
+        result.put("S", S);
+        result.put("P", BCrypt.hashpw(S, salt));
+        return buildSuccessResponse(result);
+    }
+
+    @ApiOperation(value = "AES 加密", notes = "生成密文，生产由客户端生成")
+    @RequestMapping(value = "/encrypt", method = RequestMethod.GET)
+    public ResultModel encrypt(@RequestParam String content, @RequestParam String key) {
+        try {
+            return buildSuccessResponse(AESUtil.encrypt(content, key));
+        } catch (Exception e) {
+            return buildErrorResponse(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "AES 解密", notes = "解密，生产由客户端生成")
+    @RequestMapping(value = "/decrypt", method = RequestMethod.GET)
+    public ResultModel decrypt(@RequestParam String content, @RequestParam String key) {
+        try {
+            return buildSuccessResponse(AESUtil.decrypt(content, key.replace("-","")));
+        } catch (Exception e) {
+            return buildErrorResponse(e.getMessage());
+        }
     }
 }
