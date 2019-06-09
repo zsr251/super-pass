@@ -108,7 +108,7 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/generateSecure", method = RequestMethod.GET)
     public ResultModel generateSecure(@RequestParam(required = false) String pwd) {
         pwd = StringUtils.isEmpty(pwd) ? PasswordStrengthUtil.generatePassword() : pwd;
-        String secure = UUID.randomUUID().toString().toUpperCase();
+        String secure = UUID.randomUUID().toString().toUpperCase().substring(4,23);
         String salt = BCrypt.gensalt(10);
         String S = MD5Util.encode(secure + pwd);
         Map<String, String> result = new HashMap<>(5);

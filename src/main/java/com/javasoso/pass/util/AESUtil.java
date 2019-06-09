@@ -97,21 +97,4 @@ public class AESUtil {
         }
     }
 
-    public static void main(String[] args) throws Exception{
-        String c = "Zsr25!e1em";
-        String key = "E874ADEB-6A70-41FB-80AF-C62A7699BA4B";
-
-        String s = encrypt(c,key);
-        System.out.println(s);
-        System.out.println(decrypt(s,key));
-
-         c = "abc";
-         key = "123";
-         s = encrypt(c,key);
-        System.out.println(s);
-        System.out.println(decrypt(s,key));
-
-
-    }
-
 }
