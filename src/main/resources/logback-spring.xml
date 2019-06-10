@@ -17,7 +17,7 @@
     <!-- test文件路径 -->
     <property name="TEST_FILE_PATH" value="/Users/jasonzhu/data" />
     <!-- prod文件路径 -->
-    <property name="PROD_FILE_PATH" value="/logs/pass" />
+    <property name="PROD_FILE_PATH" value="/data/logs" />
 
     <!-- 开发环境 -->
     <springProfile name="dev">
@@ -41,10 +41,10 @@
         <!-- 每天产生一个文件 -->
         <appender name="TEST-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <!-- 文件路径 -->
-            <file>${TEST_FILE_PATH}/car.log</file>
+            <file>${TEST_FILE_PATH}/pass.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- 文件名称 -->
-                <fileNamePattern>${TEST_FILE_PATH}/car.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <fileNamePattern>${TEST_FILE_PATH}/pass.%d{yyyy-MM-dd}.log</fileNamePattern>
                 <!-- 文件最大保存历史数量 -->
                 <MaxHistory>100</MaxHistory>
             </rollingPolicy>
@@ -69,10 +69,10 @@
         <!-- 每天产生一个文件 -->
         <appender name="PROD-FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
             <!-- 文件路径 -->
-            <file>${PROD_FILE_PATH}/car.log</file>
+            <file>${PROD_FILE_PATH}/pass.log</file>
             <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
                 <!-- 文件名称 -->
-                <fileNamePattern>${PROD_FILE_PATH}/car.%d{yyyy-MM-dd}.log</fileNamePattern>
+                <fileNamePattern>${PROD_FILE_PATH}/pass.%d{yyyy-MM-dd}.log</fileNamePattern>
                 <!-- 文件最大保存历史数量 -->
                 <MaxHistory>100</MaxHistory>
             </rollingPolicy>

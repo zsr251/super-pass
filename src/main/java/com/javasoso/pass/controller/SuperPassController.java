@@ -70,6 +70,72 @@ public class SuperPassController extends BaseController {
     }
 
     @CheckLogin
+    @ApiOperation(value = "修改账户类", notes = "修改账户")
+    @RequestMapping(value = "/updateAppAccount", method = RequestMethod.POST)
+    public ResultModel updateAppAccount(HttpServletRequest request, @Valid @RequestBody AppAccountVO appAccountVO) {
+        if (appService.updateAppAccount(appAccountVO, ToolsUtil.getRemoteIp(request))){
+            return buildSuccessResponse();
+        }else {
+            return buildErrorResponse("修改失败");
+        }
+    }
+
+    @CheckLogin
+    @ApiOperation(value = "修改卡片类", notes = "修改卡片")
+    @RequestMapping(value = "/updateCardAccount", method = RequestMethod.POST)
+    public ResultModel updateCardAccount(HttpServletRequest request, @Valid @RequestBody CardAccountVO cardAccountVO) {
+        if (cardService.updateCardAccount(cardAccountVO, ToolsUtil.getRemoteIp(request))){
+            return buildSuccessResponse();
+        }else {
+            return buildErrorResponse("修改失败");
+        }
+    }
+
+    @CheckLogin
+    @ApiOperation(value = "修改备忘录", notes = "修改备忘录")
+    @RequestMapping(value = "/updateMemo", method = RequestMethod.POST)
+    public ResultModel updateMemo(HttpServletRequest request, @Valid @RequestBody MemoVO memoVO) {
+        if (memoService.updateMemo(memoVO, ToolsUtil.getRemoteIp(request))){
+            return buildSuccessResponse();
+        }else {
+            return buildErrorResponse("修改失败");
+        }
+    }
+
+    @CheckLogin
+    @ApiOperation(value = "删除账户类", notes = "删除账户")
+    @RequestMapping(value = "/deleteAppAccount", method = RequestMethod.POST)
+    public ResultModel deleteAppAccount(HttpServletRequest request, @Valid @RequestBody AppAccountVO appAccountVO) {
+        if (appService.deleteAppAccount(appAccountVO.getId(), ToolsUtil.getRemoteIp(request))){
+            return buildSuccessResponse();
+        }else {
+            return buildErrorResponse("修改失败");
+        }
+    }
+
+    @CheckLogin
+    @ApiOperation(value = "删除卡片类", notes = "删除卡片")
+    @RequestMapping(value = "/deleteCardAccount", method = RequestMethod.POST)
+    public ResultModel deleteCardAccount(HttpServletRequest request, @Valid @RequestBody CardAccountVO cardAccountVO) {
+        if (cardService.deleteCardAccount(cardAccountVO.getId(), ToolsUtil.getRemoteIp(request))){
+            return buildSuccessResponse();
+        }else {
+            return buildErrorResponse("修改失败");
+        }
+    }
+
+    @CheckLogin
+    @ApiOperation(value = "删除备忘录", notes = "删除备忘录")
+    @RequestMapping(value = "/updateMemo", method = RequestMethod.POST)
+    public ResultModel deleteMemo(HttpServletRequest request, @Valid @RequestBody MemoVO memoVO) {
+        if (memoService.deleteMemo(memoVO.getId(), ToolsUtil.getRemoteIp(request))){
+            return buildSuccessResponse();
+        }else {
+            return buildErrorResponse("修改失败");
+        }
+    }
+
+    @CheckLogin
     @ApiOperation(value = "分页搜索账户类", notes = "搜索账户")
     @RequestMapping(value = "/searchAppAccount", method = RequestMethod.GET)
     public ResultModel searchAppAccount(Integer pageNum, Integer pageSize) {

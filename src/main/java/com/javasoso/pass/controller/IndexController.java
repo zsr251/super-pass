@@ -1,26 +1,24 @@
 package com.javasoso.pass.controller;
 
 import com.javasoso.pass.constant.ResultModel;
-import com.javasoso.pass.model.User;
-import com.javasoso.pass.service.UserService;
 import com.javasoso.pass.util.AESUtil;
-import com.javasoso.pass.util.BeanUtil;
 import com.javasoso.pass.util.MD5Util;
 import com.javasoso.pass.util.PasswordStrengthUtil;
-import com.javasoso.pass.vo.RegisterVO;
-import com.javasoso.pass.vo.UserVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import jodd.util.BCrypt;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+
+import static com.javasoso.pass.controller.LoginController.ON;
 
 
 /**
@@ -40,68 +38,12 @@ import java.util.UUID;
 @Slf4j
 @Api(description = "入口")
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping
 public class IndexController extends BaseController {
-    /**
-     * 开关
-     */
-    public static final String ON = "on";
-    @Autowired
-    private UserService userService;
 
     @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
-    public ResultModel index() {
-        return buildSuccessResponse();
-    }
-
-    @ApiOperation(value = "注册", notes = "使用用户名密码注册")
-    @RequestMapping(value = "/register", method = RequestMethod.POST)
-    public ResultModel register(@Valid @RequestBody RegisterVO registerVO) {
-        User user = userService.register(registerVO.getUserName(), registerVO.getSuperPass());
-        UserVO u = BeanUtil.copyBean(user, UserVO.class);
-        return buildSuccessResponse(u);
-    }
-
-    @ApiOperation(value = "手机认证", notes = "增加手机认证")
-    @RequestMapping(value = "/addPhone", method = RequestMethod.POST)
-    public ResultModel addPhoneCertificate() {
-        return new ResultModel(ResultModel.RESULT_NOT_SUPPORTED, "功能暂不支持");
-    }
-
-    @ApiOperation(value = "邮箱认证", notes = "增加邮箱认证")
-    @RequestMapping(value = "/addEmail", method = RequestMethod.POST)
-    public ResultModel addEmailCertificate() {
-        return new ResultModel(ResultModel.RESULT_NOT_SUPPORTED, "功能暂不支持");
-    }
-
-    @ApiOperation(value = "发送手机验证码", notes = "用于增加手机认证")
-    @RequestMapping(value = "/sendPhoneCode", method = RequestMethod.POST)
-    public ResultModel sendPhoneCode() {
-        return new ResultModel(ResultModel.RESULT_NOT_SUPPORTED, "功能暂不支持");
-    }
-
-    @ApiOperation(value = "发送邮箱验证码", notes = "用于增加邮箱认证")
-    @RequestMapping(value = "/sendEmailCode", method = RequestMethod.POST)
-    public ResultModel sendEmailCode() {
-        return new ResultModel(ResultModel.RESULT_NOT_SUPPORTED, "功能暂不支持");
-    }
-
-    @ApiOperation(value = "生成密码", notes = "生成随机密码")
-    @RequestMapping(value = "/generatePassword", method = RequestMethod.GET)
-    public ResultModel generatePassword(Integer length, String numSwitch, String capitalSwitch, String smallSwitch, String otherSwitch) {
-        Map<String, String> result = new HashMap<>(1);
-        result.put("password", PasswordStrengthUtil.generatePassword(length == null ? 18 : length, ON.equalsIgnoreCase(numSwitch), ON.equalsIgnoreCase(capitalSwitch), ON.equalsIgnoreCase(smallSwitch), ON.equalsIgnoreCase(otherSwitch)));
-        return buildSuccessResponse(result);
-    }
-
-    @ApiOperation(value = "检查密码强度", notes = "检测密码的强度 服务端不存储")
-    @RequestMapping(value = "/checkStrength", method = RequestMethod.GET)
-    public ResultModel checkStrength(@RequestParam String pwd) {
-        Map<String, String> result = new HashMap<>(3);
-        result.put("password", pwd);
-        result.put("strength", String.valueOf(PasswordStrengthUtil.checkPasswordStrength(pwd)));
-        result.put("level", String.valueOf(PasswordStrengthUtil.getPasswordLevel(pwd)));
-        return buildSuccessResponse(result);
+    public ResultModel index(Integer length, String numSwitch, String capitalSwitch, String smallSwitch, String otherSwitch) {
+        return buildSuccessResponse(PasswordStrengthUtil.generatePassword(length == null ? 18 : length, ON.equalsIgnoreCase(numSwitch), ON.equalsIgnoreCase(capitalSwitch), ON.equalsIgnoreCase(smallSwitch), ON.equalsIgnoreCase(otherSwitch)));
     }
 
     @ApiOperation(value = "生成 secure", notes = "只用于测试，生产由客户端生成")
