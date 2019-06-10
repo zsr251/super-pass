@@ -76,7 +76,7 @@ public class IndexController extends BaseController {
     @RequestMapping(value = "/encrypt", method = RequestMethod.GET)
     public ResultModel encrypt(@RequestParam String content, @RequestParam String key) {
         try {
-            return buildSuccessResponse(AESUtil.encrypt(content, key));
+            return buildSuccessResponse(AESUtil.encrypt(content, key.replace("-","")));
         } catch (Exception e) {
             return buildErrorResponse(e.getMessage());
         }
