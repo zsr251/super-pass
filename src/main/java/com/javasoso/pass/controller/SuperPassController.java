@@ -126,7 +126,7 @@ public class SuperPassController extends BaseController {
 
     @CheckLogin
     @ApiOperation(value = "删除备忘录", notes = "删除备忘录")
-    @RequestMapping(value = "/updateMemo", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleteMemo", method = RequestMethod.POST)
     public ResultModel deleteMemo(HttpServletRequest request, @Valid @RequestBody MemoVO memoVO) {
         if (memoService.deleteMemo(memoVO.getId(), ToolsUtil.getRemoteIp(request))){
             return buildSuccessResponse();
