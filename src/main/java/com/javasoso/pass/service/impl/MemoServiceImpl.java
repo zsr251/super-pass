@@ -60,6 +60,7 @@ public class MemoServiceImpl implements MemoService {
         if (memoVO == null || memoVO.getId() == null){
             throw new SuperPassException("参数异常");
         }
+        memoVO.setStatus(null);
         Memo record = memoMapper.selectByPrimaryKey(memoVO.getId());
         if (record == null){
             throw new SuperPassException("未找到该数据");

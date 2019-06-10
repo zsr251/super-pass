@@ -61,6 +61,7 @@ public class CardServiceImpl implements CardService {
         if (cardAccountVO == null || cardAccountVO.getId() == null){
             throw new SuperPassException("参数异常");
         }
+        cardAccountVO.setStatus(null);
         CardAccount record = cardAccountMapper.selectByPrimaryKey(cardAccountVO.getId());
         if (record == null){
             throw new SuperPassException("未找到该数据");

@@ -60,6 +60,7 @@ public class AppServiceImpl implements AppService {
         if (appAccountVO == null || appAccountVO.getId() == null){
             throw new SuperPassException("参数异常");
         }
+        appAccountVO.setStatus(null);
         AppAccount record = appAccountMapper.selectByPrimaryKey(appAccountVO.getId());
         if (record == null){
             throw new SuperPassException("未找到该数据");
