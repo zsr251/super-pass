@@ -16,8 +16,8 @@
 ## 安全方案主要设计
 
 1. 注册时：客户端生成一个UUID字符串 **【secure】**，用户设置密码强度为8的密码 **【password】**
-2. 根据 secure + password 进行 MD5 生成**【S】**
-3. super 当作密码传入服务器，secure 与 password 服务器端不存储
+2. 根据 secure + password 进行 MD5 生成 **【S】**
+3. **【S】** 当作密码传入服务器，secure 与 password 服务器端不存储
 4. 登录时：客户端计算出 S，然后进行 BCrypt(10) 加密为 **【P】**
 5. 服务端使用 BCrypt 算法验证 S 与 P 是否相同
 6. 客户端上传需要记录的 账户密码时，使用 AES 算法加密，密钥为 secure，服务端只存储密文
@@ -41,5 +41,9 @@
 ### iOS
 ### 浏览器
 ### 桌面客户端
+### 备注
+1. 本人已经在使用 pass.javasoso.com/swagger-ui.html
+2. 急需客户端展示 本人一个月后开始准备开始开发
+3. 待做账户名密码自动填充
 
  
